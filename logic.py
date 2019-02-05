@@ -27,6 +27,58 @@ def prikazi_plosco(plosca):
         print()
 
 
+def preveri_vrstice(plosca):
+    for i in range(settings.SIZE):
+        j = 1
+        igralec = plosca[i][0]
+        if not igralec: continue
+        while j < settings.SIZE and plosca[i][j] == igralec:
+            j += 1
+        if j == settings.SIZE:  # cela vrstica ima isti znak
+            return igralec
+    return False
+
+
+def preveri_diagonali(plosca):
+    # diagonala levo-desno
+    j = 1
+    igralec = plosca[0][0]
+    while j < settings.SIZE and plosca[j][j] == igralec and igralec:
+        j += 1
+    if j == settings.SIZE:
+        return igralec
+    # diagonala desno-levo
+    j = 1
+    igralec = plosca[0][settings.SIZE-1]
+    while j < settings.SIZE and plosca[j][settings.SIZE-1-j] == igralec and igralec:
+        j += 1
+    if j == settings.SIZE:
+        return igralec
+    return False
+
+
+def plosca_je_polna(plosca):
+    return sum([sum([1 for znak in vrstica if not znak]) for vrstica in plosca]) == 0
+
+
+def konec_igre(plosca):
+    """Ce je konec igre, vrne igralca, ki je zmagal, ce je remi, vrne 'remi', ce pa igre se ni konec, vrne False."""
+    # preveri vrstice
+    vrstice_konec = preveri_vrstice(plosca)
+    if vrstice_konec: return vrstice_konec
+
+    # preveri stolpce
+    stolpci_konec = preveri_vrstice(list(zip(*plosca)))  # preveri vrstice transponirane plosce
+    if stolpci_konec: return stolpci_konec
+
+    # preveri diagonali
+    diagonala_konec = preveri_diagonali(plosca)
+    if diagonala_konec: return diagonala_konec
+
+    if plosca_je_polna(plosca): return 'remi'
+    return False
+
+
 def dobi_potezo(igralec):
     while True:
         vnos = input("Na vrsti je igralec {}. Vpisi vrstico(1-{}) in stolpec(1-{}), npr '1 {}': ".format(
