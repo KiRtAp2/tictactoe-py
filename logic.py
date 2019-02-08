@@ -6,8 +6,10 @@ def igra():
     while not konec_igre(plosca):
         prikazi_plosco(plosca)
         poteza = dobi_potezo(igralec)
-        naredi_potezo(plosca, poteza, igralec)  # TODO: ali je veljavna?
-        igralec = zamenjaj_igralca(igralec)
+        if naredi_potezo(plosca, poteza, igralec):
+            igralec = zamenjaj_igralca(igralec)
+        else:
+            print("Tvoja poteza je neveljavna, poskusi ponovno.")
     prikazi_plosco(plosca)
     zmagovalec = konec_igre(plosca)
     if zmagovalec == 'remi':
@@ -96,7 +98,11 @@ def dobi_potezo(igralec):
 
 
 def naredi_potezo(plosca, poteza, igralec):
-    plosca[poteza[0]][poteza[1]] = igralec
+    if plosca[poteza[0]][poteza[1]] is None:
+        plosca[poteza[0]][poteza[1]] = igralec
+        return True
+    else:
+        return False
 
 
 def zamenjaj_igralca(igralec):

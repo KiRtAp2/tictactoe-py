@@ -25,7 +25,8 @@ def pritisk_gumba(n):
         return
     
     i, j = n//3, n%3
-    logic.naredi_potezo(plosca, (i, j), igralec)
+    if not logic.naredi_potezo(plosca, (i, j), igralec):
+        return
 
     gumbi[n]["text"] = igralec
 
